@@ -24,6 +24,6 @@ jobs:
     - name: esp-idf build
       uses: espressif/esp-idf-ci-action@v1
       with:
-        esp_idf_version: v4.4
-        target: esp32s2
-        path: 'esp32-s2-hmi-devkit-1/examples/smart-panel'
+        esp_idf_version: v5.3
+        target: esp32s3
+        path: 'esp-temp'
