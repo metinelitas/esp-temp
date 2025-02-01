@@ -32,4 +32,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: esp32-firmware
-        path: ${{GITHUB_WORKSPACE}}/main/main.c
+        path: ${{ github.workspace }}/main/main.c
