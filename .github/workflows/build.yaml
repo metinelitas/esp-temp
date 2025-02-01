@@ -26,4 +26,4 @@ jobs:
       with:
         esp_idf_version: v5.3
         target: esp32s3
-        path: 'esp-temp'
+        path: '.'
