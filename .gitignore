@@ -1,0 +1,45 @@
+# Compiled object files, static and dynamic libs
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Debug files
+*.dSYM/
+*.pch
+*.pdb
+*.idb
+
+# Dependency and build system files
+Makefile
+Makefile.in
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Editor-specific files
+.vscode/
+.idea/
+*.code-workspace
+
+# Generated files
+config.h
+config.log
+config.status
+
+# Ignore user-specific files
+*.bak
+*.~
+
+# Ignore compiled test binaries
+tests/*.o
+tests/*.exe
+tests/*.out
