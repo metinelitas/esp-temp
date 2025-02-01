@@ -17,13 +17,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
+    # - name: Checkout repo
+    #   uses: actions/checkout@v4
+    #   with:
+    #     submodules: 'recursive'
+    # - name: esp-idf build
+    #   uses: espressif/esp-idf-ci-action@v1
+    #   with:
+    #     esp_idf_version: v5.3
+    #     target: esp32s3
+    #     path: '.'
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
       with:
-        submodules: 'recursive'
-    - name: esp-idf build
-      uses: espressif/esp-idf-ci-action@v1
-      with:
-        esp_idf_version: v5.3
-        target: esp32s3
-        path: '.'
+        name: esp32-firmware
+        path: ./main/main.c
