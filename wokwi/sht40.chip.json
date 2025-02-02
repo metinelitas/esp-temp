@@ -1,16 +1,15 @@
 {
-    "name": " SHT40",
-    "author": "M",
-    "pins": [
-      "INT",
-      "SCL",
-      "SDA",
-      "GND",
-      "VCC",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
-  }
+  "name": " SHT40",
+  "author": "Metin",
+  "pins": [
+    "SCL",
+    "SDA",
+    "GND",
+    "VCC",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
+}

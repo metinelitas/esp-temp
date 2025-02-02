@@ -1,21 +1,12 @@
-// Wokwi Custom Chip - For information and examples see:
-// https://link.wokwi.com/custom-chips-alpha
-//
-// SPDX-License-Identifier: MIT
-// Copyright (C) 2022 Uri Shaked / wokwi.com
-
 #include "wokwi-api.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-const int ADDRESS = 0x22;  // You can update the I2C address if needed.
+const int ADDRESS = 0x22;
 
 typedef struct {
-  pin_t pin_int;
-  // Removed counter – we now generate sensor data on command.
-  uint32_t threshold_attr; // still available if needed by the user.
-  
+  pin_t pin_int;  
   // Storage for the 6-byte sensor reading that will be returned.
   // Bytes 0-1: temperature ticks, byte 2: CRC for temperature,
   // Bytes 3-4: humidity ticks,   byte 5: CRC for humidity.
@@ -47,9 +38,7 @@ static uint8_t calc_crc(const uint8_t *data, int len) {
 
 void chip_init() {
   chip_state_t *chip = malloc(sizeof(chip_state_t));
-  
-  chip->pin_int = pin_init("INT", INPUT);
-  
+    
   // Initialize sensor data index to 6 so that if no measurement is pending,
   // reads will return 0.
   chip->sensor_data_index = 6;
@@ -65,9 +54,6 @@ void chip_init() {
     .disconnect = on_i2c_disconnect, // Optional
   };
   i2c_init(&i2c_config);
-
-  // This attribute can be edited by the user. It's defined in wokwi-custom-part.json:
-  chip->threshold_attr = attr_init("threshold", 127);
 
   printf("Initializing simulated SHT40 sensor!\n");
 }
@@ -107,9 +93,6 @@ static void generate_sensor_reading(chip_state_t *chip) {
   // For debugging purposes, print out the measured temperature and humidity.
   printf("New measurement: Temperature = %.2f °C, Humidity = %.2f %%\n", temperature, humidity);
 
-  // Optionally, you could use chip->pin_int to signal measurement ready.
-  pin_write(chip->pin_int, LOW);
-  pin_mode(chip->pin_int, OUTPUT);
 }
 
 bool on_i2c_connect(void *user_data, uint32_t address, bool connect) {
