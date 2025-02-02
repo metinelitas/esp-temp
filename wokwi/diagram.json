@@ -1,0 +1,24 @@
+{
+    "version": 1,
+    "author": "Metin",
+    "editor": "wokwi",
+    "parts": [
+      {
+        "type": "board-esp32-s3-devkitc-1",
+        "id": "esp",
+        "top": -0.18,
+        "left": -14.63,
+        "attrs": { "builder": "esp-idf" }
+      },
+      { "type": "chip-sht40", "id": "chip1", "top": 10.62, "left": -177.6, "attrs": {} }
+    ],
+    "connections": [
+      [ "esp:TX", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX", "$serialMonitor:TX", "", [] ],
+      [ "esp:GND.2", "chip1:GND", "black", [ "h33.37", "v-76.98", "h-335.54", "v96" ] ],
+      [ "esp:14", "chip1:SDA", "#8f4814", [ "h-245.08", "v-172.98" ] ],
+      [ "esp:9", "chip1:SCL", "red", [ "h-264.28", "v-134.58" ] ]
+    ],
+    "dependencies": {},
+    "serialMonitor": { "display": "terminal" }
+  }

@@ -18,6 +18,8 @@
 
 static const char *TAG = "ESP32";
 
+static esp_err_t i2c_master_read_slave(uint8_t *data, size_t len);
+
 /*
  * Initialize the I2C master interface.
  */
@@ -44,6 +46,16 @@ static esp_err_t i2c_master_init(void)
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "I2C driver install failed: %s", esp_err_to_name(err));
     }
+
+    // Confirm that the I2C slave is connected to the bus
+    uint8_t data;
+    err = i2c_master_read_slave(&data, 1);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "I2C slave not found: %s", esp_err_to_name(err));
+    } 
+    else { 
+        ESP_LOGI(TAG, "I2C slave found");
+    }
     return err;
 }
 
@@ -57,7 +69,7 @@ static esp_err_t i2c_master_read_slave(uint8_t *data, size_t len)
     if (len == 0) {
         return ESP_OK;
     }
-
+    
     // Create an I2C command link
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 
@@ -68,7 +80,7 @@ static esp_err_t i2c_master_read_slave(uint8_t *data, size_t len)
     if (len > 1) {
         i2c_master_read(cmd, data, len - 1, I2C_MASTER_ACK);
     }
-    i2c_master_read_byte(cmd, data + len - 1, I2C_MASTER_NACK);
+    i2c_master_read_byte(cmd, data, I2C_MASTER_NACK);
     i2c_master_stop(cmd);
 
     // Execute the command link with a 1000 ms timeout
@@ -83,28 +95,28 @@ static esp_err_t i2c_master_write_slave(uint8_t *data, size_t len)
     if (len == 0) {
         return ESP_OK;
     }
-
+    
     // Create an I2C command link
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
-
+    
     // Send a start condition
     i2c_master_start(cmd);
-
+    
     // Send the slave address with write bit (I2C_MASTER_WRITE)
     i2c_master_write_byte(cmd, (SLAVE_ADDR << 1) | I2C_MASTER_WRITE, true);
-
+    
     // Write the data bytes to the I2C bus
     i2c_master_write(cmd, data, len, true);
-
+    
     // Send a stop condition
     i2c_master_stop(cmd);
-
+    
     // Execute the command link with 1000 ms timeout
     esp_err_t ret = i2c_master_cmd_begin(I2C_MASTER_NUM, cmd, pdMS_TO_TICKS(1000));
-
+    
     // Free the command link resources
     i2c_cmd_link_delete(cmd);
-
+    
     return ret;
 }
 
@@ -123,7 +135,7 @@ void i2c_read_task(void *arg)
         if (ret != ESP_OK) {
             ESP_LOGE(TAG, "Error writing command to slave: %s", esp_err_to_name(ret));
             vTaskDelay(pdMS_TO_TICKS(2000));
-            continue;
+            continue; 
         }
 
         // Wait at least 10ms for measurement to complete on the slave side
@@ -149,7 +161,7 @@ void i2c_read_task(void *arg)
             if (humidity > 100) {
                 humidity = 100.0f;
             }
-
+            
             ESP_LOGI(TAG, "Temperature: %.2f °C, Humidity: %.2f %%", temperature, humidity);
             // printf("Temperature: %.2f °C, Humidity: %.2f %% \n", temperature, humidity);
         } else {
