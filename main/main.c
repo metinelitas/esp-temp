@@ -163,7 +163,6 @@ void i2c_read_task(void *arg)
             }
             
             ESP_LOGI(TAG, "Temperature: %.2f °C, Humidity: %.2f %%", temperature, humidity);
-            // printf("Temperature: %.2f °C, Humidity: %.2f %% \n", temperature, humidity);
         } else {
             ESP_LOGE(TAG, "Error reading from slave: %s", esp_err_to_name(ret));
         }
